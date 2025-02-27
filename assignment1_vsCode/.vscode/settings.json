@@ -1,0 +1,16 @@
+{
+    "C_Cpp.intelliSenseEngine": "default",
+    "idf.espIdfPathWin": "C:\\Users\\lucie\\esp\\v5.4\\esp-idf",
+    "idf.pythonInstallPath": "C:\\Users\\lucie\\.espressif\\tools\\idf-python\\3.11.2\\python.exe",
+    "idf.openOcdConfigs": [
+        "interface/ftdi/esp32_devkitj_v1.cfg",
+        "target/esp32.cfg"
+    ],
+    "idf.portWin": "COM15",
+    "idf.toolsPathWin": "C:\\Users\\lucie\\.espressif",
+    "idf.flashType": "UART",
+    "C_Cpp.errorSquiggles": "enabled",
+    "files.associations": {
+        "cstdint": "c"
+    }
+}
