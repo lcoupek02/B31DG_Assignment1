@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "assignment1_vsCode",
-    "project_version":    "913eaf4-dirty",
+    "project_version":    "ef49160-dirty",
     "project_path":       "C:/Users/lucie/Documents/B31DG_Assignment1/assignment1_vsCode",
     "idf_path":           "C:/Users/lucie/esp/v5.4/esp-idf",
     "build_dir":          "C:/Users/lucie/Documents/B31DG_Assignment1/assignment1_vsCode/build",
@@ -1195,7 +1195,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "C:/Users/lucie/Documents/B31DG_Assignment1/assignment1_vsCode/build/esp-idf/main/libmain.a",
-            "sources": [ "C:/Users/lucie/Documents/B31DG_Assignment1/assignment1_vsCode/main/assignment1.c", "C:/Users/lucie/Documents/B31DG_Assignment1/assignment1_vsCode/main/hello_world_main.c" ],
+            "sources": [ "C:/Users/lucie/Documents/B31DG_Assignment1/assignment1_vsCode/main/assignment1.c" ],
             "include_dirs": []
         },
         "mbedtls": {

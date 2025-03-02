@@ -34,31 +34,49 @@ uint8_t n; //Number of waves
 //Function Prototypes
 void PulseWidth();
 int updateN();
+void synPulse();
+void dataPulseOn();
+void idleTime();
+void dataPulseOff();
+
+void IRAM_ATTR ISR_SELECT();
 void IRAM_ATTR ISR_ON();
 
+// Main program setup 
+void setup() {
+  Serial.begin(9600);
 
+  // Initliases inputs and outputs
+  pinMode(SYN_RED, OUTPUT);
+  pinMode(DATA_GREEN, OUTPUT);
+  pinMode(OUTPUT_ENABLE, INPUT_PULLUP);
+  pinMode(OUTPUT_SELECT, INPUT_PULLUP);
+
+  //  Initialises required interrupts
+  attachInterrupt(OUTPUT_SELECT, ISR_SELECT, RISING);
+  attachInterrupt(OUTPUT_ENABLE, ISR_ON, RISING);
+
+}
 
 // Calculate on time of a pulse 
 void PulseWidth() {
   int32_t onTime;   
     
-  //onTime = x + ((increase)*n)  ;
-  onTime = a + ((n-1) * increase);
+  onTime = a + ((n-1) * increase);    //Equation to calcuate pulse on time 
   delayMicroseconds(onTime);
-
 }
 
 // Updates after each pulse 
 int updateN() {
   if(!reverseMode){ 
     if (n < 10) {
-        n++;    //increment n if pulse is in normal mode
+        n++;    //Increment n if pulse is in normal mode
     }
     return n;
     }
   else{
     if(n > 0){
-      n--;    //decrement n if pulse is in reverse mode
+      n--;    //Decrement n if pulse is in reverse mode
     }
     return n;
   }
@@ -68,9 +86,9 @@ int updateN() {
 void IRAM_ATTR ISR_ON() {
   unsigned long currentTime = micros();  // Records time of when interrupt was activated 
 
-  if (currentTime - lastButtonTime1 > debounceDelay) {   // checks for debounce
-    on = !on;     //on variable determines if LED is on or not
-    lastButtonTime1 = currentTime;   // updates last time button was pressed
+  if (currentTime - lastButtonTime1 > debounceDelay) {   //Checks for debounce
+    on = !on;     //'on' variable determines if LED is on or not
+    lastButtonTime1 = currentTime;   //Updates last time button was pressed
   }
 }
 
@@ -78,9 +96,9 @@ void IRAM_ATTR ISR_ON() {
 void IRAM_ATTR ISR_SELECT() {
   unsigned long currentTime = micros();  // Records time of when interrupt was activated 
     
-  if (currentTime - lastButtonTime2 > debounceDelay) {   // checks for debounce
-    reverseMode = !reverseMode;   //reverse variable determines what mode the wave is in
-    lastButtonTime2 = currentTime;   // updates last time button was pressed
+  if (currentTime - lastButtonTime2 > debounceDelay) {   //Checks for debounce
+    reverseMode = !reverseMode;   //'reverse' variable determines what mode the wave is in
+    lastButtonTime2 = currentTime;   //Updates last time button was pressed
   }
 }
 
@@ -98,7 +116,7 @@ void dataPulseOn(){
   digitalWrite(DATA_GREEN, LOW);
 }
 
-// Put into functions for easy reuses/changes 
+// Put idle and data off timings into functions for easy reuses/changes 
 void idleTime(){
   delayMicroseconds(d);
 }
@@ -107,60 +125,42 @@ void dataPulseOff(){
   delayMicroseconds(b);
 }
 
-// Main program setup 
-void setup() {
-  Serial.begin(9600);
-
-  // Initliases inputs and outputs
-  pinMode(SYN_RED, OUTPUT);
-  pinMode(DATA_GREEN, OUTPUT);
-  pinMode(OUTPUT_ENABLE, INPUT_PULLUP);
-  pinMode(OUTPUT_SELECT, INPUT_PULLUP);
-
-  //  Initialises required interrupts
-  attachInterrupt(OUTPUT_SELECT, ISR_SELECT, RISING);
-  attachInterrupt(OUTPUT_ENABLE, ISR_ON, RISING);
-
-  interrupts();
-
-}
 
 // Main program loop
 void loop() {
    
+  synPulse();    //Perform SYNC pulse
 
   if (reverseMode) {    //Runs if mode = reverse
    
-    n = c;    //calculate number of pulses for reverse mode operation
-    synPulse(); 
-    
-    idleTime(); // Idle time between the end of the final pulse off-time and the start of the next SYNC pulse (at the start of the pulse for reverse mode)
+    n = c;    //Set number of pulses for reverse mode operation
+   
+    idleTime(); //Idle time between the end of the final pulse off-time and the start of the next SYNC pulse (at the start of the pulse for reverse mode)
 
     for (int i = 0; i < c; i++) {
-      if (!reverseMode) break;  // If mode has changed, exit loop immediately
+      if (!reverseMode) break;  //If mode has changed, exit loop immediately
    
       dataPulseOff(); //Off time between pulses
-      dataPulseOn();  // Perform DATA pulse 
+      dataPulseOn();  //Perform DATA pulse 
  
-      n = updateN();  //update value of n after pulse
+      n = updateN();  //Update value of n after pulse
       
     }
   }
   else {  //Runs if mode = normal
         
     n = 1;    //Reset n for normal mode operation
-    synPulse();   //Perform SYN pulse
 
     for (int i = 0; i < c; i++) {
-      if (reverseMode) break;  // If mode has changed, exit loop immediately
+      if (reverseMode) break;  //If mode has changed, exit loop immediately
 
       dataPulseOn(); //Perform DATA pulse
       dataPulseOff(); //Off time between pulses
 
-      n = updateN();  //update value of n after pulse
+      n = updateN();  //Update value of n after pulse
       
     }  
-    idleTime(); // Idle time between the end of the final pulse off-time and the start of the next SYNC pulse.
+    idleTime(); //Idle time between the end of the final pulse off-time and the start of the next SYNC pulse.
   }
  
 }
