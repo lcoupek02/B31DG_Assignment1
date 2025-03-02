@@ -13,11 +13,11 @@ The implementation is carried out in two stages:
 assignment1_vsCode/
 │── .devcontainer/         # Configuration files for development container (if used)
 │── .vscode/               # VS Code-specific settings and configurations
-│── build/                 # Build directory (typically generated, not included in version control)
 │── main/                  # Contains the main ESP-IDF source files
 │   │── CMakeLists.txt     # CMake configuration file for ESP-IDF build system
 │   │── assignment1.c      # Main source file for the ESP-IDF implementation
 │   │── assignment1.h      # Header file defining functions and constants
+│── .gitignore             # .gitignore file to exclude build folder from git repository
 │── CMakeLists.txt         # Top-level CMake configuration file
 │── README.md              # Project documentation (this file)
 │── sdkconfig              # ESP-IDF configuration file
