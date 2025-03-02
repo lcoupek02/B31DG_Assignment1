@@ -48,7 +48,7 @@ void IRAM_ATTR ISR_SELECT() {
     }
 }
 
-// Calculate on time of a pulse 
+// Calculate the on time of a pulse 
 void PulseWidth() {
     int32_t onTime;   
     
