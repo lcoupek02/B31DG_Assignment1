@@ -1,0 +1,19 @@
+# Ignore build directory
+build/
+
+# Ignore compiled object files
+*.o
+*.out
+*.bin
+*.elf
+
+# Ignore logs and backups
+*.log
+*.bak
+
+# Ignore ESP-IDF configuration files
+sdkconfig
+sdkconfig.old
+
+# Ignore VS Code settings (optional)
+.vscode/
